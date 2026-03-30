@@ -1,0 +1,20 @@
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/tmdb/(.*)",
+      "dest": "/api/tmdb-proxy?path=$1"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/health"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}

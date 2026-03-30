@@ -1,0 +1,345 @@
+<div class="page-shell">
+  <header class="top-nav">
+    <div class="top-nav-inner">
+      <button class="brand-home button-reset" type="button" data-nav="home" aria-label="W.D.I.S. home">
+        <span class="brand-mark">W.D.I.S.</span>
+      </button>
+      <nav class="top-nav-links" aria-label="Primary">
+        <button class="top-nav-link button-reset" type="button" data-nav="home">Home</button>
+        <button class="top-nav-link button-reset" type="button" data-nav="library">Library</button>
+        <button class="top-nav-link button-reset" type="button" data-nav="settings">Settings</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <section class="view is-active" id="view-home" data-view="home">
+      <section class="hero">
+        <div class="hero-backdrop"></div>
+        <div class="hero-content">
+          <p class="eyebrow">Search the streamers, not the internet</p>
+          <h1>Find your next <span class="gradient-text">obsession</span>.</h1>
+          <p class="hero-copy">
+            W.D.I.S. shows where movies and series are actually available,
+            lets you filter by streamer, and helps you jump into the best watch option fast.
+          </p>
+          <form class="search-panel" id="hero-search-form">
+            <label class="search-label" for="hero-search-input">Search titles, genres, or streamers.</label>
+            <div class="search-row">
+              <input
+                id="hero-search-input"
+                name="query"
+                type="search"
+                autocomplete="off"
+                placeholder="Try Inception, drama, or Netflix…"
+              />
+              <button type="submit">Search</button>
+            </div>
+            <div class="search-suggestions" id="hero-search-suggestions" hidden></div>
+            <div class="chip-row" id="genre-chips" aria-label="Quick filters"></div>
+            <div class="genre-filter-callout">
+              <div>
+                <p class="genre-filter-kicker">Mood chips</p>
+                <p class="genre-filter-status" id="genre-filter-status" aria-live="polite">
+                  Trending is shaping Tonight's best bets below.
+                </p>
+              </div>
+              <button class="genre-jump-link button-reset" id="genre-jump-link" type="button">
+                Jump to picks
+              </button>
+            </div>
+          </form>
+        </div>
+        <div class="hero-service-filter">
+          <div class="service-filter-panel">
+            <div class="service-filter-header">
+              <div>
+                <p class="eyebrow">Filter by service</p>
+                <h3>Pick a streamer</h3>
+              </div>
+              <div class="shelf-nav" aria-label="Service filter navigation">
+                <button class="shelf-nav-button" id="service-filters-prev" type="button" aria-label="Previous services">&#8249;</button>
+                <button class="shelf-nav-button" id="service-filters-next" type="button" aria-label="More services">&#8250;</button>
+              </div>
+            </div>
+            <div class="service-filter-row" id="home-service-filters" aria-label="Homepage streaming service filters"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="results-section" hidden>
+        <div class="section-heading" id="results-header">
+          <div>
+            <p class="eyebrow">Search results</p>
+            <h2 id="results-title">Showing results</h2>
+          </div>
+          <p class="section-copy" id="results-summary"></p>
+        </div>
+        <form class="search-panel search-panel-inline" id="results-search-form">
+          <div class="search-row">
+            <input
+              id="results-search-input"
+              name="query"
+              type="search"
+              autocomplete="off"
+              placeholder="Try Inception, drama, or Netflix…"
+            />
+            <button type="submit">Search</button>
+          </div>
+          <div class="search-suggestions" id="results-search-suggestions" hidden></div>
+        </form>
+        <div class="chip-row filter-row" id="result-type-filters" aria-label="Result filters"></div>
+        <div class="results-grid" id="results-grid"></div>
+        <div class="results-feed-footer" id="results-feed-footer" aria-live="polite"></div>
+      </section>
+
+      <section class="section" id="home-featured-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" id="home-featured-eyebrow">Trending now</p>
+            <h2 id="home-featured-title">Tonight's best bets</h2>
+          </div>
+          <p class="section-copy" id="home-featured-summary">
+            Start with a mood or a streamer, then browse live movie and series picks without leaving the homepage.
+          </p>
+        </div>
+        <div class="featured-section">
+          <div class="featured-section-header">
+            <div>
+              <p class="eyebrow">Movies</p>
+              <h3>Streaming movies</h3>
+            </div>
+            <div class="shelf-nav" aria-label="Movie shelf navigation">
+              <button class="shelf-nav-button" id="featured-movies-prev" type="button" aria-label="Previous movies">&#8249;</button>
+              <button class="shelf-nav-button" id="featured-movies-next" type="button" aria-label="More movies">&#8250;</button>
+            </div>
+          </div>
+          <div class="carousel" id="featured-movies-grid"></div>
+        </div>
+        <div class="featured-section">
+          <div class="featured-section-header">
+            <div>
+              <p class="eyebrow">TV Shows</p>
+              <h3>Streaming shows</h3>
+            </div>
+            <div class="shelf-nav" aria-label="Show shelf navigation">
+              <button class="shelf-nav-button" id="featured-series-prev" type="button" aria-label="Previous shows">&#8249;</button>
+              <button class="shelf-nav-button" id="featured-series-next" type="button" aria-label="More shows">&#8250;</button>
+            </div>
+          </div>
+          <div class="carousel" id="featured-series-grid"></div>
+        </div>
+      </section>
+
+      <section class="section marketing-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Why Use W.D.I.S.</p>
+            <h2>What the app helps you do</h2>
+          </div>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card feature-card-wide">
+            <h3>Filter by streamer</h3>
+            <p>Move between major services like Netflix, Prime Video, Hulu, HBO, and Apple TV+ to see what each shelf can actually play right now.</p>
+          </article>
+          <article class="feature-card feature-card-accent">
+            <h3>Preview before you commit</h3>
+            <p>Open the side preview for synopsis, trailer, cast, and watch options without losing your place on the homepage.</p>
+          </article>
+          <article class="feature-card">
+            <h3>Explore cast and crew</h3>
+            <p>Open full details to follow actors, directors, writers, and producers into the other movies and series they are tied to.</p>
+          </article>
+          <article class="feature-card feature-card-media">
+            <div class="mini-poster"></div>
+            <div>
+              <h3>Stay on live availability</h3>
+              <p>Rows, recommendations, and service shelves are shaped around titles with real watch-provider availability instead of dead-end picks.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="view-library" data-view="library">
+      <section class="section section-first">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Library</p>
+            <h2>Your Movies &amp; Shows</h2>
+          </div>
+          <p class="section-copy" id="library-summary">
+            Manage your Radarr and Sonarr collection in one place.
+          </p>
+        </div>
+
+        <div class="library-toolbar info-panel">
+          <form id="library-search-form" class="library-search-form search-panel search-panel-inline">
+            <label class="search-label" for="library-search-input">Search your collection by title, genre, or media type.</label>
+            <div class="search-row">
+              <input
+                id="library-search-input"
+                class="library-search-input"
+                type="search"
+                autocomplete="off"
+                placeholder="Try Severance, horror, or series..."
+              />
+              <button type="submit">Search</button>
+            </div>
+            <div class="search-suggestions" id="library-search-suggestions" hidden></div>
+          </form>
+          <div class="library-toolbar-row">
+            <button class="action-button action-button-secondary" id="library-refresh-button" type="button">Refresh library</button>
+          </div>
+          <div class="chip-row" id="library-genre-chips" aria-label="Library genre filters"></div>
+          <div class="chip-row filter-row" id="library-type-filters" aria-label="Library filters"></div>
+          <p class="detail-support-copy" id="library-status" aria-live="polite"></p>
+        </div>
+
+        <div class="library-section">
+          <div class="section-heading compact-heading section-heading-simple">
+            <h2>Movies</h2>
+          </div>
+          <div class="results-grid library-grid" id="library-movies-grid"></div>
+        </div>
+
+        <div class="library-section">
+          <div class="section-heading compact-heading section-heading-simple">
+            <h2>TV Shows</h2>
+          </div>
+          <div class="results-grid library-grid" id="library-series-grid"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="view" id="view-settings" data-view="settings">
+      <section class="section section-first">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Settings</p>
+            <h2>Configure Services In-App</h2>
+          </div>
+          <p class="section-copy">
+            Save your TMDB, Radarr, and Sonarr setup directly in W.D.I.S. No manual env edits required.
+          </p>
+        </div>
+
+        <form id="settings-form" class="settings-form">
+          <article class="info-panel settings-panel">
+            <p class="panel-kicker">TMDB</p>
+            <label for="settings-tmdb-token">Read access token</label>
+            <input id="settings-tmdb-token" name="tmdbToken" type="password" autocomplete="off" />
+          </article>
+
+          <article class="info-panel settings-panel">
+            <p class="panel-kicker">Radarr</p>
+            <label for="settings-radarr-host">Host</label>
+            <input id="settings-radarr-host" name="radarrHost" type="text" autocomplete="off" placeholder="https://radarr.example.com" />
+            <label for="settings-radarr-api-key">API key</label>
+            <input id="settings-radarr-api-key" name="radarrApiKey" type="password" autocomplete="off" />
+            <label for="settings-radarr-root">Root folder</label>
+            <input id="settings-radarr-root" name="radarrRootFolder" type="text" autocomplete="off" placeholder="/movies" />
+            <label for="settings-radarr-quality">Quality profile ID</label>
+            <input id="settings-radarr-quality" name="radarrQualityProfileId" type="number" min="1" step="1" />
+          </article>
+
+          <article class="info-panel settings-panel">
+            <p class="panel-kicker">Sonarr</p>
+            <label for="settings-sonarr-host">Host</label>
+            <input id="settings-sonarr-host" name="sonarrHost" type="text" autocomplete="off" placeholder="https://sonarr.example.com" />
+            <label for="settings-sonarr-api-key">API key</label>
+            <input id="settings-sonarr-api-key" name="sonarrApiKey" type="password" autocomplete="off" />
+            <label for="settings-sonarr-root">Root folder</label>
+            <input id="settings-sonarr-root" name="sonarrRootFolder" type="text" autocomplete="off" placeholder="/tv" />
+            <label for="settings-sonarr-quality">Quality profile ID</label>
+            <input id="settings-sonarr-quality" name="sonarrQualityProfileId" type="number" min="1" step="1" />
+          </article>
+
+          <div class="settings-actions">
+            <button class="action-button" id="settings-save-button" type="submit">Save settings</button>
+            <button class="action-button action-button-secondary" id="settings-reload-button" type="button">Reload from server</button>
+          </div>
+          <p class="detail-support-copy" id="settings-feedback" aria-live="polite"></p>
+        </form>
+      </section>
+    </section>
+
+    <section class="view" id="view-details" data-view="details">
+      <section class="section section-first detail-return-shell">
+        <button class="detail-home-link button-reset" type="button" data-nav="home" aria-label="Return to the home screen">
+          Back to home
+        </button>
+      </section>
+      <section class="detail-hero" id="detail-hero"></section>
+      <section class="section detail-layout">
+        <aside class="detail-sidebar">
+          <article class="info-panel">
+            <p class="panel-kicker">Streaming now</p>
+            <div id="detail-providers" class="stack-list"></div>
+          </article>
+          <article class="info-panel">
+            <p class="panel-kicker">Details</p>
+            <div class="detail-stat-grid" id="detail-stats"></div>
+          </article>
+        </aside>
+        <div class="detail-main">
+          <section class="detail-rich-grid">
+            <article class="info-panel detail-media-panel">
+              <div class="section-heading compact-heading section-heading-simple">
+                <h2>Trailer</h2>
+              </div>
+              <div id="detail-trailer"></div>
+              <div id="detail-insights"></div>
+            </article>
+          </section>
+          <section>
+            <div class="section-heading compact-heading section-heading-simple">
+              <h2>Cast</h2>
+            </div>
+            <div class="cast-grid" id="cast-grid"></div>
+          </section>
+          <section>
+            <div class="section-heading compact-heading section-heading-simple">
+              <h2>Crew</h2>
+            </div>
+            <div class="cast-grid" id="crew-grid"></div>
+          </section>
+          <section id="person-spotlight-section" hidden>
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="panel-kicker">People spotlight</p>
+                <h2 id="person-spotlight-title">Select a person</h2>
+              </div>
+              <p class="section-copy" id="person-spotlight-summary"></p>
+            </div>
+            <div id="person-spotlight-content"></div>
+          </section>
+          <section>
+            <div class="section-heading compact-heading">
+              <div>
+                <p class="eyebrow">Related picks</p>
+                <h2>More like this</h2>
+              </div>
+            </div>
+            <div class="related-grid" id="related-grid"></div>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <aside class="feature-preview-panel" id="feature-preview-panel" hidden>
+    <button class="feature-preview-close" id="feature-preview-close" type="button" aria-label="Close preview" title="Close (Esc)">&#x2715; Close</button>
+    <div id="feature-preview-content"></div>
+  </aside>
+  <button class="feature-preview-scrim button-reset" id="feature-preview-scrim" type="button" aria-label="Close preview panel" hidden></button>
+
+  <footer class="footer">
+    <div>
+      <strong class="brand-mark">W.D.I.S.</strong>
+      <p>Where Does it Stream?</p>
+    </div>
+    <p>W.D.I.S. is built to answer one question quickly: where can I watch this right now?</p>
+  </footer>
+</div>
