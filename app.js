@@ -623,6 +623,62 @@ function previewDetailForKey(key) {
   return state.detailCache.get(key) || state.previewCache.get(key) || null;
 }
 
+function refreshHomePreviewRequestUi() {
+  if (!state.homePreviewKey) {
+    return;
+  }
+
+  const detail = previewDetailForKey(state.homePreviewKey);
+  if (!detail) {
+    return;
+  }
+
+  const previewButtonSlot = featurePreviewContent.querySelector("[data-preview-request-button]");
+  if (previewButtonSlot) {
+    previewButtonSlot.innerHTML = requestActionButtonMarkup(detail, getRequestUiState(detail));
+  }
+
+  const previewFeedbackSlot = featurePreviewContent.querySelector("[data-preview-request-feedback]");
+  if (previewFeedbackSlot) {
+    const requestFeedback = requestFeedbackMarkup(getRequestUiState(detail));
+    previewFeedbackSlot.innerHTML = `${requestFeedback.message}${requestFeedback.troubleshooting}`;
+  }
+}
+
+function refreshVisibleRequestCards() {
+  document.querySelectorAll(".media-card[data-open-details]").forEach((card) => {
+    const key = card.dataset.openDetails;
+    const item = key ? (state.itemCache.get(key) || previewDetailForKey(key)) : null;
+    if (!item) {
+      return;
+    }
+
+    const badgeMarkup = mediaCardLibraryBadgeMarkup(item);
+    const existingBadge = card.querySelector(".media-card-library-badge");
+    if (badgeMarkup) {
+      if (existingBadge) {
+        existingBadge.outerHTML = badgeMarkup;
+      } else {
+        card.querySelector(".media-visual")?.insertAdjacentHTML("afterbegin", badgeMarkup);
+      }
+    } else if (existingBadge) {
+      existingBadge.remove();
+    }
+
+    const actionsMarkup = mediaCardRequestActionMarkup(item);
+    const existingActions = card.querySelector(".media-card-actions");
+    if (actionsMarkup) {
+      if (existingActions) {
+        existingActions.outerHTML = actionsMarkup;
+      } else {
+        card.querySelector(".media-visual")?.insertAdjacentHTML("beforeend", actionsMarkup);
+      }
+    } else if (existingActions) {
+      existingActions.remove();
+    }
+  });
+}
+
 function rerenderRequestSurfaces() {
   if (state.view === "details" && state.selectedKey) {
     const detail = state.detailCache.get(state.selectedKey);
@@ -632,10 +688,7 @@ function rerenderRequestSurfaces() {
   }
 
   if (state.homePreviewKey) {
-    const previewDetail = previewDetailForKey(state.homePreviewKey);
-    if (previewDetail) {
-      renderHomePreview(previewDetail);
-    }
+    refreshHomePreviewRequestUi();
   }
 
   if (requestSurfaceRenderFrame) {
@@ -645,13 +698,7 @@ function rerenderRequestSurfaces() {
   requestSurfaceRenderFrame = window.requestAnimationFrame(() => {
     requestSurfaceRenderFrame = 0;
 
-    if (state.view === "home") {
-      renderFeatured();
-    }
-
-    if (!resultsSection.hidden) {
-      renderResults();
-    }
+    refreshVisibleRequestCards();
 
     if (!heroSearchSuggestions.hidden && state.heroSuggestions.length) {
       renderSuggestions(heroSearchSuggestions, state.heroSuggestions);
@@ -5266,7 +5313,7 @@ function renderHomePreview(detail) {
   featurePreviewContent.innerHTML = `
     <div class="feature-preview-poster-wrap">
       <img class="feature-preview-poster" src="${escapeHtml(detail.backdrop)}" alt="${escapeHtml(detail.title)} backdrop" />
-      <div class="poster-request-overlay">
+      <div class="poster-request-overlay" data-preview-request-button>
         ${requestActionButtonMarkup(detail, requestUi)}
       </div>
     </div>
@@ -5305,7 +5352,7 @@ function renderHomePreview(detail) {
           : ``
       }
     </div>
-    <div class="feature-preview-section request-preview-section">
+    <div class="feature-preview-section request-preview-section" data-preview-request-feedback>
       ${requestFeedback.message}
       ${requestFeedback.troubleshooting}
     </div>
@@ -5451,13 +5498,7 @@ async function openHomePreview(key, triggerEl = null) {
           return;
         }
 
-        void fetchDetail(key)
-          .then((fullDetail) => {
-            if (requestId === state.homePreviewRequestId && state.homePreviewKey === key) {
-              renderHomePreview(fullDetail);
-            }
-          })
-          .catch(() => {});
+        void fetchDetail(key).catch(() => {});
       }, 240);
     }
 
@@ -6067,7 +6108,7 @@ document.body.addEventListener("click", async (event) => {
   }
 });
 
-document.body.addEventListener("mouseover", (event) => {
+document.body.addEventListener("mouseenter", (event) => {
   if (state.view !== "home" && state.view !== "library") {
     return;
   }
@@ -6095,7 +6136,27 @@ document.body.addEventListener("mouseover", (event) => {
     previewHoverPrefetchTimer = null;
     prefetchHomePreviewDetail(previewHoverPrefetchKey);
   }, 140);
-});
+}, true);
+
+document.body.addEventListener("mouseleave", (event) => {
+  const card = event.target.closest(".media-card[data-open-details]");
+  if (!card) {
+    return;
+  }
+
+  if (event.relatedTarget && card.contains(event.relatedTarget)) {
+    return;
+  }
+
+  if (previewHoverPrefetchTimer) {
+    window.clearTimeout(previewHoverPrefetchTimer);
+    previewHoverPrefetchTimer = null;
+  }
+
+  if (previewHoverPrefetchKey === card.dataset.openDetails) {
+    previewHoverPrefetchKey = "";
+  }
+}, true);
 
 document.body.addEventListener("focusin", (event) => {
   if (state.view !== "home" && state.view !== "library") {
